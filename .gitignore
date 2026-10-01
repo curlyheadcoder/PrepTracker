@@ -1,0 +1,20 @@
+# Maven Target Output
+target/
+*.jar
+*.war
+*.ear
+
+# IDE Files
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

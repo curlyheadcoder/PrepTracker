@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Developer Interview Study Tracker & Todo App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">⚡</div>
+                <div class="brand-text">
+                    <h2>JavaPrep Pro</h2>
+                    <p>Interview Study & Todo Tracker</p>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="tracker">
+                    <span class="nav-icon">📊</span> 3-4 Day Study Tracker
+                </button>
+                <button class="nav-item" data-tab="todos">
+                    <span class="nav-icon">✅</span> Todo Management
+                </button>
+                <button class="nav-item" data-tab="analytics">
+                    <span class="nav-icon">📈</span> Stream API Analytics
+                </button>
+                <button class="nav-item" data-tab="cheat-sheets">
+                    <span class="nav-icon">📖</span> Interview Cheatsheets
+                </button>
+                <button class="nav-item" data-tab="users">
+                    <span class="nav-icon">👤</span> User Management
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-picker-card">
+                    <label for="currentUserSelect">Active User:</label>
+                    <select id="currentUserSelect" class="form-select">
+                        <option value="">Loading users...</option>
+                    </select>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-title">
+                    <h1 id="pageTitle">Interview Study Tracker</h1>
+                    <p id="pageSubtitle">Track your 3-4 day preparation progress across 18 core Java topics</p>
+                </div>
+                <div class="header-actions">
+                    <div class="countdown-badge">
+                        <span>⏳ Interview Countdown:</span>
+                        <strong id="daysLeft">3 Days Left</strong>
+                    </div>
+                </div>
+            </header>
+
+            <!-- TAB 1: STUDY TRACKER -->
+            <section id="tab-tracker" class="tab-content active">
+                <div class="progress-overview-card">
+                    <div class="progress-header">
+                        <div>
+                            <h3>Overall Interview Readiness</h3>
+                            <p>Track completion of mandatory Java Developer interview topics</p>
+                        </div>
+                        <div class="percentage-display" id="overallPercent">0%</div>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="overallProgressBar" style="width: 0%"></div>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-pill"><span id="completedTopicsCount">0</span> / 18 Topics Completed</div>
+                        <div class="stat-pill pending"><span id="pendingTopicsCount">18</span> Topics Remaining</div>
+                    </div>
+                </div>
+
+                <div class="days-grid">
+                    <!-- Day 1 -->
+                    <div class="day-card" id="day1Card">
+                        <div class="day-header">
+                            <span class="day-badge day-1">DAY 1</span>
+                            <h4>Core Java 8, REST & JPA Monolith</h4>
+                            <span class="day-progress" id="day1Progress">0/9</span>
+                        </div>
+                        <div class="topic-list" id="day1Topics"></div>
+                    </div>
+
+                    <!-- Day 2 -->
+                    <div class="day-card" id="day2Card">
+                        <div class="day-header">
+                            <span class="day-badge day-2">DAY 2</span>
+                            <h4>SQL JOINs, Transactions & Testing</h4>
+                            <span class="day-progress" id="day2Progress">0/4</span>
+                        </div>
+                        <div class="topic-list" id="day2Topics"></div>
+                    </div>
+
+                    <!-- Day 3 -->
+                    <div class="day-card" id="day3Card">
+                        <div class="day-header">
+                            <span class="day-badge day-3">DAY 3</span>
+                            <h4>Microservices, Kafka & Docker</h4>
+                            <span class="day-progress" id="day3Progress">0/3</span>
+                        </div>
+                        <div class="topic-list" id="day3Topics"></div>
+                    </div>
+
+                    <!-- Day 4 -->
+                    <div class="day-card" id="day4Card">
+                        <div class="day-header">
+                            <span class="day-badge day-4">DAY 4</span>
+                            <h4>Kubernetes, Git, JIRA & Mock Interview</h4>
+                            <span class="day-progress" id="day4Progress">0/2</span>
+                        </div>
+                        <div class="topic-list" id="day4Topics"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: TODO MANAGEMENT -->
+            <section id="tab-todos" class="tab-content">
+                <div class="action-bar">
+                    <div class="filter-controls">
+                        <select id="filterStatus" class="form-select">
+                            <option value="">All Statuses</option>
+                            <option value="PENDING">PENDING</option>
+                            <option value="IN_PROGRESS">IN_PROGRESS</option>
+                            <option value="COMPLETED">COMPLETED</option>
+                        </select>
+                        <select id="filterPriority" class="form-select">
+                            <option value="">All Priorities</option>
+                            <option value="LOW">LOW</option>
+                            <option value="MEDIUM">MEDIUM</option>
+                            <option value="HIGH">HIGH</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="openCreateTodoModal">
+                        <span>+</span> Create New Todo
+                    </button>
+                </div>
+
+                <div class="todos-grid" id="todosList">
+                    <div class="empty-state">Loading Todos...</div>
+                </div>
+
+                <div class="pagination-container" id="paginationControls"></div>
+            </section>
+
+            <!-- TAB 3: STREAM API ANALYTICS -->
+            <section id="tab-analytics" class="tab-content">
+                <div class="analytics-header">
+                    <button class="btn btn-secondary" id="refreshAnalyticsBtn">🔄 Refresh Live Stream Analytics</button>
+                </div>
+                <div class="analytics-metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-icon">📋</span>
+                        <div class="metric-info">
+                            <span class="metric-value" id="analyticsTotal">0</span>
+                            <span class="metric-label">Total Todos</span>
+                        </div>
+                    </div>
+                    <div class="metric-card success">
+                        <span class="metric-icon">✨</span>
+                        <div class="metric-info">
+                            <span class="metric-value" id="analyticsCompleted">0</span>
+                            <span class="metric-label">Completed</span>
+                        </div>
+                    </div>
+                    <div class="metric-card warning">
+                        <span class="metric-icon">⏳</span>
+                        <div class="metric-info">
+                            <span class="metric-value" id="analyticsPending">0</span>
+                            <span class="metric-label">Pending</span>
+                        </div>
+                    </div>
+                    <div class="metric-card info">
+                        <span class="metric-icon">🚀</span>
+                        <div class="metric-info">
+                            <span class="metric-value" id="analyticsInProgress">0</span>
+                            <span class="metric-label">In Progress</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-details-grid">
+                    <div class="glass-card">
+                        <h3>Status Distribution (Stream groupingBy)</h3>
+                        <div id="statusDistribution" class="distribution-list"></div>
+                    </div>
+                    <div class="glass-card">
+                        <h3>Priority Distribution (Stream groupingBy)</h3>
+                        <div id="priorityDistribution" class="distribution-list"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: CHEATSHEETS -->
+            <section id="tab-cheat-sheets" class="tab-content">
+                <div class="cheatsheet-tabs" id="cheatsheetNav">
+                    <button class="cs-tab active" data-cs="java8">Java 8 & Streams</button>
+                    <button class="cs-tab" data-cs="rest">REST & ResponseEntity</button>
+                    <button class="cs-tab" data-cs="jpa">Spring Data JPA</button>
+                    <button class="cs-tab" data-cs="sql">SQL & JOINs</button>
+                    <button class="cs-tab" data-cs="qa">Top Interview Questions</button>
+                </div>
+                <div class="glass-card cheatsheet-viewer" id="cheatsheetBody">
+                    <!-- Dynamic Content Loaded Here -->
+                </div>
+            </section>
+
+            <!-- TAB 5: USER MANAGEMENT -->
+            <section id="tab-users" class="tab-content">
+                <div class="user-management-grid">
+                    <div class="glass-card">
+                        <h3>Create New User</h3>
+                        <form id="createUserForm">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="userNameInput" class="form-control" placeholder="e.g. John Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="userEmailInput" class="form-control" placeholder="e.g. john@example.com" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Add User</button>
+                        </form>
+                    </div>
+
+                    <div class="glass-card">
+                        <h3>Registered Users</h3>
+                        <div class="users-list" id="usersList"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Create Todo Modal -->
+    <div class="modal-backdrop" id="todoModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modalTitle">Create New Todo Task</h3>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="todoForm">
+                <input type="hidden" id="todoIdInput">
+                <div class="form-group">
+                    <label>Task Title *</label>
+                    <input type="text" id="todoTitle" class="form-control" placeholder="e.g. Revise Spring Data JPA N+1 problem" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="todoDescription" class="form-control" rows="3" placeholder="Notes, query details, code snippets..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label>Status</label>
+                        <select id="todoStatus" class="form-select">
+                            <option value="PENDING">PENDING</option>
+                            <option value="IN_PROGRESS">IN_PROGRESS</option>
+                            <option value="COMPLETED">COMPLETED</option>
+                        </select>
+                    </div>
+                    <div class="form-group col">
+                        <label>Priority *</label>
+                        <select id="todoPriority" class="form-select">
+                            <option value="LOW">LOW</option>
+                            <option value="MEDIUM" selected>MEDIUM</option>
+                            <option value="HIGH">HIGH</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label>Due Date</label>
+                        <input type="date" id="todoDueDate" class="form-control">
+                    </div>
+                    <div class="form-group col">
+                        <label>Assign To User *</label>
+                        <select id="todoUser" class="form-select" required>
+                            <option value="">Select User...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelModalBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Todo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
