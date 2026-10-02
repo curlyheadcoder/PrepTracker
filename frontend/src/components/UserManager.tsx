@@ -32,7 +32,7 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, onCreateUser })
               type="text"
               className="form-control"
               style={{ width: '100%' }}
-              placeholder="e.g. John Doe"
+              placeholder="e.g. Alex Rivera"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -44,7 +44,7 @@ export const UserManager: React.FC<UserManagerProps> = ({ users, onCreateUser })
               type="email"
               className="form-control"
               style={{ width: '100%' }}
-              placeholder="e.g. john@example.com"
+              placeholder="e.g. alex@preptracker.app"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}

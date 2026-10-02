@@ -109,8 +109,8 @@ export function App() {
 
   // Users State
   const [users, setUsers] = useState<UserItem[]>([
-    { id: 1, name: 'Alice Smith', email: 'alice@example.com', todoCount: 2 },
-    { id: 2, name: 'John Doe', email: 'john@example.com', todoCount: 1 },
+    { id: 1, name: 'My Prep Profile', email: 'me@preptracker.app', todoCount: 2 },
+    { id: 2, name: 'Study Partner', email: 'partner@preptracker.app', todoCount: 1 },
   ]);
   const [currentUserId, setCurrentUserId] = useState<number | null>(1);
 
@@ -123,7 +123,7 @@ export function App() {
       status: 'PENDING',
       priority: 'HIGH',
       userId: 1,
-      userName: 'Alice Smith',
+      userName: 'My Prep Profile',
     },
     {
       id: 2,
@@ -132,7 +132,7 @@ export function App() {
       status: 'COMPLETED',
       priority: 'MEDIUM',
       userId: 1,
-      userName: 'Alice Smith',
+      userName: 'My Prep Profile',
     },
     {
       id: 3,
@@ -141,7 +141,7 @@ export function App() {
       status: 'IN_PROGRESS',
       priority: 'HIGH',
       userId: 2,
-      userName: 'John Doe',
+      userName: 'Study Partner',
     },
   ]);
 
@@ -255,6 +255,11 @@ export function App() {
               ? 'Quick-reference guides, code snippets, and top interview questions'
               : 'Manage registered users and active workspace context'
           }
+          theme={theme}
+          toggleTheme={toggleTheme}
+          users={users}
+          currentUserId={currentUserId}
+          setCurrentUserId={setCurrentUserId}
         />
 
         {activeTab === 'plans' && (

@@ -73,23 +73,19 @@ export const Navbar: React.FC<NavbarProps> = ({
       </nav>
 
       <div className="sidebar-footer">
-        {/* Theme Toggle Button */}
         <button className="theme-toggle-btn" onClick={toggleTheme}>
-          <span>{theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode'}</span>
-          {theme === 'dark' ? <Moon size={16} color="#a5b4fc" /> : <Sun size={16} color="#d97706" />}
+          <span>{theme === 'dark' ? '☀️ Light Theme' : '🌙 Dark Theme'}</span>
+          {theme === 'dark' ? <Sun size={16} color="#fbbf24" /> : <Moon size={16} color="#60a5fa" />}
         </button>
 
-        <div className="form-group" style={{ marginBottom: '10px' }}>
-          <label style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '6px', display: 'block' }}>
-            Active User Context:
-          </label>
+        <div className="sidebar-user-context">
+          <span className="user-context-label">Active Profile:</span>
           <select
-            className="form-select"
-            style={{ width: '100%' }}
+            className="form-select sidebar-user-select"
             value={currentUserId || ''}
             onChange={(e) => setCurrentUserId(Number(e.target.value))}
           >
-            {users.length === 0 && <option value="">No users</option>}
+            {users.length === 0 && <option value="">No Active Profile</option>}
             {users.map((u) => (
               <option key={u.id} value={u.id}>
                 {u.name}
@@ -99,7 +95,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         <div className="vercel-badge">
-          <ExternalLink size={14} color="#10b981" /> <strong>PrepTracker</strong> on Vercel
+          <ExternalLink size={14} color="#10b981" /> <strong>PrepTracker</strong> Live
         </div>
       </div>
     </aside>
