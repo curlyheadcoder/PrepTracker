@@ -1,22 +1,56 @@
 import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Header } from './components/Header';
+import { PlanExplorer } from './components/PlanExplorer';
+import { PlanCreatorModal } from './components/PlanCreatorModal';
 import { StudyTracker } from './components/StudyTracker';
 import { TodoManager } from './components/TodoManager';
 import { StreamAnalytics } from './components/StreamAnalytics';
 import { InterviewCheatsheets } from './components/InterviewCheatsheets';
 import { UserManager } from './components/UserManager';
-import type { TodoItem, UserItem, TodoAnalytics } from './types';
+import { DEFAULT_PLANS } from './data/defaultPlans';
+import type { TodoItem, UserItem, TodoAnalytics, StudyPlan, SubtopicNote } from './types';
 
 const API_BASE = '/api/v1';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<string>('tracker');
 
-  // Subtopics persistence
+  // Plans State
+  const [plans, setPlans] = useState<StudyPlan[]>(() => {
+    try {
+      const saved = localStorage.getItem('preptracker_plans');
+      return saved ? JSON.parse(saved) : DEFAULT_PLANS;
+    } catch {
+      return DEFAULT_PLANS;
+    }
+  });
+
+  const [activePlanId, setActivePlanId] = useState<string>(() => {
+    try {
+      const savedId = localStorage.getItem('preptracker_active_plan_id');
+      return savedId || DEFAULT_PLANS[0].id;
+    } catch {
+      return DEFAULT_PLANS[0].id;
+    }
+  });
+
+  const [isPlanCreatorOpen, setIsPlanCreatorOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('preptracker_plans', JSON.stringify(plans));
+  }, [plans]);
+
+  useEffect(() => {
+    localStorage.setItem('preptracker_active_plan_id', activePlanId);
+  }, [activePlanId]);
+
+  const currentPlan = plans.find((p) => p.id === activePlanId) || plans[0];
+
+  // Subtopics progress state
   const [completedSubtopics, setCompletedSubtopics] = useState<Record<string, boolean>>(() => {
     try {
-      const saved = localStorage.getItem('java_prep_subtopics');
+      const saved = localStorage.getItem('preptracker_subtopics_progress');
       return saved ? JSON.parse(saved) : {};
     } catch {
       return {};
@@ -24,8 +58,35 @@ export function App() {
   });
 
   useEffect(() => {
-    localStorage.setItem('java_prep_subtopics', JSON.stringify(completedSubtopics));
+    localStorage.setItem('preptracker_subtopics_progress', JSON.stringify(completedSubtopics));
   }, [completedSubtopics]);
+
+  // Notes state
+  const [notes, setNotes] = useState<Record<string, SubtopicNote>>(() => {
+    try {
+      const saved = localStorage.getItem('preptracker_subtopic_notes');
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('preptracker_subtopic_notes', JSON.stringify(notes));
+  }, [notes]);
+
+  const handleSaveNote = (newNote: SubtopicNote) => {
+    setNotes((prev) => ({
+      ...prev,
+      [newNote.subtopicId]: newNote,
+    }));
+  };
+
+  const handleSaveCustomPlan = (newPlan: StudyPlan) => {
+    setPlans((prev) => [newPlan, ...prev]);
+    setActivePlanId(newPlan.id);
+    setActiveTab('tracker');
+  };
 
   // Users State
   const [users, setUsers] = useState<UserItem[]>([
@@ -65,7 +126,7 @@ export function App() {
     },
   ]);
 
-  // Try fetching real data from Spring Boot API backend if available
+  // Try fetching real backend data if available
   useEffect(() => {
     const fetchBackendData = async () => {
       try {
@@ -78,7 +139,7 @@ export function App() {
           }
         }
       } catch {
-        // Fallback to initial local state when running standalone on Vercel
+        // Fallback to local state
       }
     };
     fetchBackendData();
@@ -102,7 +163,6 @@ export function App() {
     };
     setTodos((prev) => [todoItem, ...prev]);
 
-    // Update user todo count
     setUsers((prev) =>
       prev.map((u) => (u.id === newTodo.userId ? { ...u, todoCount: (u.todoCount || 0) + 1 } : u))
     );
@@ -118,7 +178,7 @@ export function App() {
     setTodos((prev) => prev.filter((t) => t.id !== id));
   };
 
-  // Compute Live Stream Analytics
+  // Compute Stream Analytics
   const analytics: TodoAnalytics = {
     totalTodos: todos.length,
     completedCount: todos.filter((t) => t.status === 'COMPLETED').length,
@@ -149,8 +209,10 @@ export function App() {
       <main className="main-content">
         <Header
           title={
-            activeTab === 'tracker'
-              ? '3-4 Day Interview Study Tracker'
+            activeTab === 'plans'
+              ? 'Plan Marketplace & Custom Roadmaps'
+              : activeTab === 'tracker'
+              ? `${currentPlan.title}`
               : activeTab === 'todos'
               ? 'Todo Management System'
               : activeTab === 'analytics'
@@ -160,22 +222,39 @@ export function App() {
               : 'User Context Management'
           }
           subtitle={
-            activeTab === 'tracker'
-              ? 'Track your completion progress across 18 core Java Developer topics & subtopics'
+            activeTab === 'plans'
+              ? 'Choose a pre-configured roadmap or create your own custom 5-6 month preparation plan'
+              : activeTab === 'tracker'
+              ? `${currentPlan.description}`
               : activeTab === 'todos'
               ? 'Manage study tasks, priorities, and assignments'
               : activeTab === 'analytics'
               ? 'Real-time aggregations calculated via Java 8 Stream Collectors'
               : activeTab === 'cheatsheets'
-              ? 'Quick-reference guides, code snippets, and top 30 interview questions'
+              ? 'Quick-reference guides, code snippets, and top interview questions'
               : 'Manage registered users and active workspace context'
           }
         />
 
+        {activeTab === 'plans' && (
+          <PlanExplorer
+            plans={plans}
+            activePlanId={activePlanId}
+            onSelectPlan={(id) => {
+              setActivePlanId(id);
+              setActiveTab('tracker');
+            }}
+            onOpenCreatePlanModal={() => setIsPlanCreatorOpen(true)}
+          />
+        )}
+
         {activeTab === 'tracker' && (
           <StudyTracker
+            currentPlan={currentPlan}
             completedSubtopics={completedSubtopics}
             setCompletedSubtopics={setCompletedSubtopics}
+            notes={notes}
+            onSaveNote={handleSaveNote}
           />
         )}
 
@@ -200,6 +279,13 @@ export function App() {
           <UserManager users={users} onCreateUser={handleCreateUser} />
         )}
       </main>
+
+      {/* Plan Creator Modal */}
+      <PlanCreatorModal
+        isOpen={isPlanCreatorOpen}
+        onClose={() => setIsPlanCreatorOpen(false)}
+        onSavePlan={handleSaveCustomPlan}
+      />
     </div>
   );
 }

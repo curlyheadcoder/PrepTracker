@@ -7,14 +7,14 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>todo-app</artifactId>
+    <artifactId>preptracker</artifactId>
     <version>1.0.0</version>
-    <name>todo-app</name>
-    <description>Interview-focused Todo Management System in Spring Boot</description>
+    <name>preptracker</name>
+    <description>PrepTracker - Generic Multi-Plan Interview Preparation & Study Platform</description>
 
     <properties>
         <java.version>17</java.version>
@@ -22,13 +22,13 @@
     </properties>
 
     <dependencies>
-        <!-- Spring Boot Starter Web for RESTful Web Services -->
+        <!-- Spring Boot Starter Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Spring Boot Starter Data JPA for ORM & Database persistence -->
+        <!-- Spring Boot Starter Data JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -40,28 +40,28 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <!-- H2 Database for fast local in-memory testing/dev default -->
+        <!-- H2 Database for local dev -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
 
-        <!-- MySQL Driver for production/Docker environment -->
+        <!-- MySQL Driver for production -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Springdoc OpenAPI for Swagger UI API documentation -->
+        <!-- Springdoc OpenAPI for Swagger UI -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>${springdoc.version}</version>
         </dependency>
 
-        <!-- Spring Boot Starter Test (JUnit 5, Mockito, MockMvc, AssertJ) -->
+        <!-- Spring Boot Starter Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

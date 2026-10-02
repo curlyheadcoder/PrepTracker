@@ -8,9 +8,34 @@ export interface Subtopic {
 
 export interface StudyTopic {
   id: string;
-  day: 1 | 2 | 3 | 4;
+  day?: 1 | 2 | 3 | 4;
   title: string;
   subtopics: Subtopic[];
+}
+
+export interface PlanModule {
+  id: string;
+  title: string; // e.g. "Day 1", "Week 1", "Month 1"
+  orderIndex: number;
+  topics: StudyTopic[];
+}
+
+export interface StudyPlan {
+  id: string;
+  title: string;
+  description: string;
+  category: 'Java' | 'Full Stack' | 'System Design' | 'AI & ML' | 'Custom';
+  durationText: string; // e.g. "3-4 Days", "30 Days", "6 Months"
+  isCustom?: boolean;
+  modules: PlanModule[];
+}
+
+export interface SubtopicNote {
+  subtopicId: string;
+  contentMarkdown: string;
+  attachmentUrl?: string;
+  isAiGenerated?: boolean;
+  updatedAt?: string;
 }
 
 export interface TodoItem {

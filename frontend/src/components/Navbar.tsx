@@ -1,6 +1,6 @@
 import React from 'react';
 import type { UserItem } from '../types';
-import { CheckSquare, BarChart2, BookOpen, Users, Zap, ExternalLink } from 'lucide-react';
+import { CheckSquare, BarChart2, BookOpen, Users, Zap, ExternalLink, Layers } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: string;
@@ -24,17 +24,23 @@ export const Navbar: React.FC<NavbarProps> = ({
           <Zap size={24} />
         </div>
         <div className="brand-text">
-          <h2>JavaPrep Pro</h2>
-          <p>Interview & Todo Tracker</p>
+          <h2>PrepTracker</h2>
+          <p>Multi-Plan Study Platform</p>
         </div>
       </div>
 
       <nav className="nav-menu">
         <button
+          className={`nav-item ${activeTab === 'plans' ? 'active' : ''}`}
+          onClick={() => setActiveTab('plans')}
+        >
+          <Layers size={18} /> Plan Marketplace
+        </button>
+        <button
           className={`nav-item ${activeTab === 'tracker' ? 'active' : ''}`}
           onClick={() => setActiveTab('tracker')}
         >
-          <CheckSquare size={18} /> 3-4 Day Study Tracker
+          <CheckSquare size={18} /> Study Roadmap
         </button>
         <button
           className={`nav-item ${activeTab === 'todos' ? 'active' : ''}`}
@@ -82,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </select>
         </div>
         <div className="vercel-badge" style={{ marginTop: '12px' }}>
-          <ExternalLink size={14} color="#10b981" /> Ready for <strong>Vercel</strong>
+          <ExternalLink size={14} color="#10b981" /> <strong>PrepTracker</strong> on Vercel
         </div>
       </div>
     </aside>
