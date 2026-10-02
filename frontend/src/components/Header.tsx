@@ -24,8 +24,8 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="top-header">
       <div className="header-title">
-        <h1>{title}</h1>
-        <p>{subtitle}</p>
+        <h1 className="header-gradient-title">{title}</h1>
+        <p className="header-subtitle">{subtitle}</p>
       </div>
 
       <div className="header-actions">
@@ -35,28 +35,32 @@ export const Header: React.FC<HeaderProps> = ({
           onClick={toggleTheme}
           title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
         >
-          {theme === 'dark' ? (
-            <>
-              <Sun size={16} className="theme-icon sun-icon" />
-              <span>Light Mode</span>
-            </>
-          ) : (
-            <>
-              <Moon size={16} className="theme-icon moon-icon" />
-              <span>Dark Mode</span>
-            </>
-          )}
+          <div className="theme-btn-inner">
+            {theme === 'dark' ? (
+              <>
+                <Sun size={15} className="theme-icon sun-icon" />
+                <span>Light</span>
+              </>
+            ) : (
+              <>
+                <Moon size={15} className="theme-icon moon-icon" />
+                <span>Dark</span>
+              </>
+            )}
+          </div>
         </button>
 
         {/* User Profile Selector (Top Bar) */}
         <div className="header-user-badge">
-          <User size={15} className="user-icon" />
+          <div className="avatar-chip">
+            <User size={14} className="user-icon" />
+          </div>
           <select
             className="header-user-select"
             value={currentUserId || ''}
             onChange={(e) => setCurrentUserId(Number(e.target.value))}
           >
-            {users.length === 0 && <option value="">No Active Profile</option>}
+            {users.length === 0 && <option value="">No Profile</option>}
             {users.map((u) => (
               <option key={u.id} value={u.id}>
                 {u.name}
@@ -65,14 +69,16 @@ export const Header: React.FC<HeaderProps> = ({
           </select>
         </div>
 
-        {/* Interview Countdown Badge */}
+        {/* Live Countdown Badge */}
         <div className="countdown-badge">
-          <Clock size={16} color="#ef4444" />
-          <span>Interview:</span>
-          <strong>3 Days Left</strong>
+          <span className="live-pulse-dot"></span>
+          <Clock size={14} className="countdown-icon" />
+          <span className="countdown-label">Target Interview:</span>
+          <strong className="countdown-time">3 Days</strong>
         </div>
       </div>
     </header>
   );
 };
+
 

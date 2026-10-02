@@ -25,50 +25,66 @@ export const Navbar: React.FC<NavbarProps> = ({
     <aside className="sidebar">
       <div className="brand">
         <div className="brand-icon">
-          <Zap size={22} />
+          <Zap size={22} color="#ffffff" />
         </div>
         <div className="brand-text">
-          <h2>PrepTracker</h2>
-          <p>Multi-Plan Study Platform</p>
+          <div className="brand-title">
+            <h2>PrepTracker</h2>
+            <span className="brand-badge">PRO</span>
+          </div>
+          <p>Interview Study Platform</p>
         </div>
       </div>
 
+      <div className="nav-section-label">ROADMAPS & TASKS</div>
       <nav className="nav-menu">
         <button
           className={`nav-item ${activeTab === 'plans' ? 'active' : ''}`}
           onClick={() => setActiveTab('plans')}
         >
-          <Layers size={18} /> Plan Marketplace
+          <Layers size={18} className="nav-icon" />
+          <span>Plan Marketplace</span>
         </button>
         <button
           className={`nav-item ${activeTab === 'tracker' ? 'active' : ''}`}
           onClick={() => setActiveTab('tracker')}
         >
-          <CheckSquare size={18} /> Study Roadmap
+          <CheckSquare size={18} className="nav-icon" />
+          <span>Study Roadmap</span>
         </button>
         <button
           className={`nav-item ${activeTab === 'todos' ? 'active' : ''}`}
           onClick={() => setActiveTab('todos')}
         >
-          <CheckSquare size={18} /> Todo Management
+          <CheckSquare size={18} className="nav-icon" />
+          <span>Todo Management</span>
         </button>
+      </nav>
+
+      <div className="nav-section-label" style={{ marginTop: '20px' }}>
+        KNOWLEDGE & ANALYTICS
+      </div>
+      <nav className="nav-menu">
         <button
           className={`nav-item ${activeTab === 'analytics' ? 'active' : ''}`}
           onClick={() => setActiveTab('analytics')}
         >
-          <BarChart2 size={18} /> Stream API Analytics
+          <BarChart2 size={18} className="nav-icon" />
+          <span>Stream Analytics</span>
         </button>
         <button
           className={`nav-item ${activeTab === 'cheatsheets' ? 'active' : ''}`}
           onClick={() => setActiveTab('cheatsheets')}
         >
-          <BookOpen size={18} /> Interview Cheatsheets
+          <BookOpen size={18} className="nav-icon" />
+          <span>Interview Guides</span>
         </button>
         <button
           className={`nav-item ${activeTab === 'users' ? 'active' : ''}`}
           onClick={() => setActiveTab('users')}
         >
-          <Users size={18} /> User Management
+          <Users size={18} className="nav-icon" />
+          <span>User Profiles</span>
         </button>
       </nav>
 
@@ -85,7 +101,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             value={currentUserId || ''}
             onChange={(e) => setCurrentUserId(Number(e.target.value))}
           >
-            {users.length === 0 && <option value="">No Active Profile</option>}
+            {users.length === 0 && <option value="">No Profile</option>}
             {users.map((u) => (
               <option key={u.id} value={u.id}>
                 {u.name}
@@ -101,3 +117,4 @@ export const Navbar: React.FC<NavbarProps> = ({
     </aside>
   );
 };
+
