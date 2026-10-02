@@ -1,6 +1,6 @@
 import React from 'react';
 import type { UserItem } from '../types';
-import { CheckSquare, BarChart2, BookOpen, Users, Zap, ExternalLink, Layers } from 'lucide-react';
+import { CheckSquare, BarChart2, BookOpen, Users, Zap, ExternalLink, Layers, Sun, Moon } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: string;
@@ -8,6 +8,8 @@ interface NavbarProps {
   users: UserItem[];
   currentUserId: number | null;
   setCurrentUserId: (id: number) => void;
+  theme: 'dark' | 'light';
+  toggleTheme: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -16,12 +18,14 @@ export const Navbar: React.FC<NavbarProps> = ({
   users,
   currentUserId,
   setCurrentUserId,
+  theme,
+  toggleTheme,
 }) => {
   return (
     <aside className="sidebar">
       <div className="brand">
         <div className="brand-icon">
-          <Zap size={24} />
+          <Zap size={22} />
         </div>
         <div className="brand-text">
           <h2>PrepTracker</h2>
@@ -69,7 +73,13 @@ export const Navbar: React.FC<NavbarProps> = ({
       </nav>
 
       <div className="sidebar-footer">
-        <div className="form-group">
+        {/* Theme Toggle Button */}
+        <button className="theme-toggle-btn" onClick={toggleTheme}>
+          <span>{theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode'}</span>
+          {theme === 'dark' ? <Moon size={16} color="#a5b4fc" /> : <Sun size={16} color="#d97706" />}
+        </button>
+
+        <div className="form-group" style={{ marginBottom: '10px' }}>
           <label style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '6px', display: 'block' }}>
             Active User Context:
           </label>
@@ -87,7 +97,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             ))}
           </select>
         </div>
-        <div className="vercel-badge" style={{ marginTop: '12px' }}>
+
+        <div className="vercel-badge">
           <ExternalLink size={14} color="#10b981" /> <strong>PrepTracker</strong> on Vercel
         </div>
       </div>

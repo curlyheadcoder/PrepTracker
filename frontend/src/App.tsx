@@ -16,6 +16,25 @@ const API_BASE = '/api/v1';
 export function App() {
   const [activeTab, setActiveTab] = useState<string>('tracker');
 
+  // Theme Mode State ('dark' | 'light')
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    try {
+      const saved = localStorage.getItem('preptracker_theme');
+      return (saved === 'light' || saved === 'dark') ? saved : 'dark';
+    } catch {
+      return 'dark';
+    }
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('preptracker_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
   // Plans State
   const [plans, setPlans] = useState<StudyPlan[]>(() => {
     try {
@@ -204,6 +223,8 @@ export function App() {
         users={users}
         currentUserId={currentUserId}
         setCurrentUserId={setCurrentUserId}
+        theme={theme}
+        toggleTheme={toggleTheme}
       />
 
       <main className="main-content">
